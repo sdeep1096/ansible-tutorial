@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: create simeone user
+    tags: always
+    user:
+      name: simeone
+      group: root
+  - name: add ssh key for simeone
+    tags: always
+    authorized_key:
+      user: simeone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPUHWXNNrCk92NW9BUl6f+U6GrXsZG5BOgaAvUowQ490 ansible"
+
+  - name: add sudoers file for simeone
+    tags: always
+    copy:
+      src: sudoer_simeone
+      dest: /etc/sudoers.d/simeone
+      owner: root
+      group: root
+      mode: 0440
